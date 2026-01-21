@@ -2,12 +2,18 @@
 #include <stdio.h>
 #include <string.h>
 #include <malloc.h>
+#include <errno.h>
 
 static void    ft_strlen_test_one_string(char *str){
     size_t ft_strlen_ret = ft_strlen(str);
+    int errno_ret = errno;
     size_t strlen_ret = strlen(str); // null pointer case for standard strlen
-    printf("str: %s,\n ft_strlen returned: %lu\n    strlen returned: %lu\t%s\n", str, ft_strlen_ret, strlen_ret,
-        (ft_strlen_ret != strlen_ret) ? "❌" : "✅");
+    int errno_ret_std = errno;
+    printf("str: %s,\n ft_strlen returned: %lu\n    strlen returned: %lu\t%s\terrno: %d\terrno_std: %d\t%s\n", str, ft_strlen_ret, strlen_ret,
+        (ft_strlen_ret != strlen_ret) ? "❌" : "✅",
+        errno_ret, errno_ret_std,
+        (errno_ret != errno_ret_std) ? "❌" : "✅"
+    );
 }
 
 static void    ft_strlen_test(){
@@ -48,19 +54,27 @@ static void    ft_strcmp_test(){
 static void ft_strcpy_test_one_string(char *str){
     char buf[5000];
     char *ft_ret, *ret;
+    int errno_ret = 0, errno_ret_std = 0;
     {
         memset(buf, 0, 5000);
         printf("strSrc: '%s',\tstrDst: '%s',\t", str, buf);
         ft_ret = ft_strcpy(buf, str);
+        errno_ret = errno;
         printf("strDst after: '%s',\tft_strcpy returned: '%s'\n", buf, ft_ret);
     }
     {
         memset(buf, 0, 5000);
         printf("strSrc: '%s',\tstrDst: '%s',\t", str, buf);
         ret = strcpy(buf, str);
+        errno_ret_std = errno;
         printf("strDst after: '%s',\t   strcpy returned: '%s'\n", buf, ret);
     }
-    printf("ft_strcpy returned: %p\t strcpy returned: %p\t%s\n", ft_ret, ret, (ft_ret != ret) ? "❌" : "✅");
+    printf("ft_strcpy returned: %p\t strcpy returned: %p\t%s"
+        "\terrno: %d\terrno_std: %d\t%s\n",
+        ft_ret, ret, (ft_ret != ret) ? "❌" : "✅",
+        errno_ret, errno_ret_std,
+        (errno_ret != errno_ret_std) ? "❌" : "✅"
+    );
 }
 
 static void ft_strcpy_test(void){
@@ -77,6 +91,7 @@ static void ft_strcpy_test(void){
 static void ft_strdup_test_one_string(char *str){
     char buf[5000];
     char *ft_ret, *ret;
+    int errno_ret = 0, errno_ret_std = 0;
     {
         memset(buf, 0, 5000);
         printf("strSrc: '%s',\t", str);
@@ -86,6 +101,7 @@ static void ft_strdup_test_one_string(char *str){
             printf("ft_strdup returned NULL\n");
             return;
         }
+        errno_ret = errno;
     }
     {
         memset(buf, 0, 5000);
@@ -97,8 +113,14 @@ static void ft_strdup_test_one_string(char *str){
             free(ft_ret);
             return;
         }
+        errno_ret_std = errno;
     }
-    printf("ft_strdup returned: %p\t strdup returned: %p\t%s\n", ft_ret, ret, (strcmp(ft_ret, ret)) ? "❌" : "✅");
+    printf("ft_strdup returned: %p\t strdup returned: %p\t%s"
+        "\terrno: %d\terrno_std: %d\t%s\n",
+        ft_ret, ret, (strcmp(ft_ret, ret)) ? "❌" : "✅",
+        errno_ret, errno_ret_std,
+        (errno_ret != errno_ret_std) ? "❌" : "✅"
+    );
 }
 
 static void ft_strdup_test(void){
@@ -116,14 +138,29 @@ int main(void)
 {
     printf("\nTEST:ft_write\n=================\n");
     {
+        int errno_ret = 0, errno_ret_std = 0;
         int ft_ret = ft_write(1, "Hello World!\n", 14);
+        errno_ret = errno;
         int ret = write(1, "Hello World!\n", 14);
-        printf("ft_write return value: %d\n   write return value: %d\t%s\n", ft_ret, ret, (ft_ret != ret) ? "❌" : "✅");
+        errno_ret_std = errno;
+        printf("ft_write return value: %d\n   write return value: %d\t%s"
+            "\terrno: %d\terrno_std: %d\t%s\n",
+            ft_ret, ret, (ft_ret != ret) ? "❌" : "✅",
+            errno_ret, errno_ret_std,
+            (ft_ret != ret) ? "❌" : "✅"
+        );
     }
     {
+        int errno_ret = 0, errno_ret_std = 0;
         int ft_ret = ft_write(-10, "Hello World with bad fd!\n", 28);
+        errno_ret = errno;
         int ret = write(-10, "Hello World with bad fd!\n", 28);
-        printf("ft_write return value: %d\n   write return value: %d\t%s\n", ft_ret, ret, (ft_ret != ret) ? "❌" : "✅");
+        errno_ret_std = errno;
+        printf("ft_write return value: %d\n   write return value: %d\t"
+            "errno: %d\terrno_std: %d\t%s\n",
+            ft_ret, ret, errno_ret, errno_ret_std,
+            (ft_ret != ret) ? "❌" : "✅"
+        );
     }
 
     printf("\nTEST:ft_read\n=================\n");

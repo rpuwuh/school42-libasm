@@ -1,6 +1,6 @@
-./src/*.o
-./libasm.a
-./a.out
+src/*.o
+libasm.a
+a.out
 .DS_Store
 .vscode/
 .idea/

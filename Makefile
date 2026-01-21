@@ -27,7 +27,7 @@ $(NAME): $(OBJ)
 	ar rcs $(NAME) $(OBJ)
  
 test: all
-	$(CC) -no-pie -g3 -m64 testmains/main.c $(NAME) -o test
+	$(CC) -no-pie -g3 -m64 testmains/main.c -L -lasm $(NAME) -o test
 
 test_run: test
 	./test
