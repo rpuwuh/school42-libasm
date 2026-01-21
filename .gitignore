@@ -1,0 +1,7 @@
+./src/*.o
+./libasm.a
+./a.out
+.DS_Store
+.vscode/
+.idea/
+test
