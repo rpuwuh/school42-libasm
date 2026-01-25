@@ -19,4 +19,3 @@ ft_strlen:   ; implicit registers initialization
 
 .return:
     ret
-

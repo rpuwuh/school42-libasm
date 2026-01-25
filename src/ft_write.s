@@ -26,4 +26,3 @@ ft_write:   ; implicit registers initialization
     mov [rax], rcx ; save errno
     mov rax, -1
     ret
-    
